@@ -19,7 +19,6 @@
         {
             $this->db->order_by('updated_at', 'desc');
             return $this->db->get('version', 1)->row_array();
-            
         }
     
     }
