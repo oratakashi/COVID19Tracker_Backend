@@ -9,8 +9,9 @@
     
         public function index_get()
         {
-            $instagram = \InstagramScraper\Instagram::withCredentials('amandahasna5', 'dhinie12', new Psr16Adapter('Files'));
-            $medias = $instagram->getMedias('bnpb_indonesia', 10);
+            $instagram = \InstagramScraper\Instagram::withCredentials('amandahasna5', 'dhinie', new Psr16Adapter('Files'));
+            $instagram->login();
+            $medias = $instagram->getMedias('bnpb_indonesia', 5);
             $account = $instagram->getAccount('bnpb_indonesia');
 
             $output = array();
