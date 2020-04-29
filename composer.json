@@ -11,7 +11,8 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"raiym/instagram-php-scraper": "^0.9.8"
+		"raiym/instagram-php-scraper": "^0.9.8",
+		"phpfastcache/phpfastcache": "^8.0"
 	},
 	"autoload": {
 		"classmap": [

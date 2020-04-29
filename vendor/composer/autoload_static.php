@@ -10,6 +10,8 @@ class ComposerStaticInit768fbf1f2e7a772a0a8314014c8b5020
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Cache\\' => 10,
+            'Phpfastcache\\' => 13,
         ),
         'I' => 
         array (
@@ -21,6 +23,14 @@ class ComposerStaticInit768fbf1f2e7a772a0a8314014c8b5020
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Phpfastcache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpfastcache/lib/Phpfastcache',
         ),
         'InstagramScraper\\' => 
         array (

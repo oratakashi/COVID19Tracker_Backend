@@ -9,7 +9,7 @@
     
         public function index_get()
         {
-            $instagram = new \InstagramScraper\Instagram();
+            $instagram = \InstagramScraper\Instagram::withCredentials('amandahasna5', 'dhinie12', new Psr16Adapter('Files'));
             $medias = $instagram->getMedias('bnpb_indonesia', 10);
             $account = $instagram->getAccount('bnpb_indonesia');
 
