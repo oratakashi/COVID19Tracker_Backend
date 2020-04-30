@@ -9,9 +9,13 @@
     
         public function index_get()
         {
+            $limit = 5;
+            if(!empty($this->get('limit'))){
+                $limit = $this->get('limit');
+            }
             $instagram = \InstagramScraper\Instagram::withCredentials('amandahasna5', 'dhinie', new Psr16Adapter('Files'));
             $instagram->login();
-            $medias = $instagram->getMedias('bnpb_indonesia', 5);
+            $medias = $instagram->getMedias('bnpb_indonesia', $limit);
             $account = $instagram->getAccount('bnpb_indonesia');
 
             $output = array();
