@@ -149,7 +149,7 @@ class NewsModel extends CI_Model
         $ch = curl_init();
 
         // set url for Kompas Dot Com
-        curl_setopt($ch, CURLOPT_URL, "https://www.kompas.com/covid-19?page=" . $page);
+        curl_setopt($ch, CURLOPT_URL, "http://www.kompas.com/covid-19?page=" . $page);
 
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
 
@@ -163,6 +163,8 @@ class NewsModel extends CI_Model
 
         $curl_error = curl_error($ch);
         echo "<script>console.log('Error : $curl_error');</script>";
+
+        var_dump($curl_error);
 
         // tutup curl 
         curl_close($ch);
