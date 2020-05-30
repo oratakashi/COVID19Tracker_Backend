@@ -1,35 +1,37 @@
 <?php
-    
-    defined('BASEPATH') OR exit('No direct script access allowed');
 
-    require APPPATH . '/libraries/Scraper.php';
-    
-    class NewsModel extends CI_Model {
-    
-        public function read_detik($page)
-        {
-            // persiapkan curl for Detik dot com
-            $ch = curl_init(); 
+defined('BASEPATH') or exit('No direct script access allowed');
 
-            // set url for Detik Dot Com
-            curl_setopt($ch, CURLOPT_URL, "https://www.detik.com/tag/virus-corona/?sortby=time&page=".$page);
+require APPPATH . '/libraries/Scraper.php';
 
-            // return the transfer as a string 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+class NewsModel extends CI_Model
+{
 
-            // $output contains the output string 
-            $output = curl_exec($ch); 
+    public function read_detik($page)
+    {
+        // persiapkan curl for Detik dot com
+        $ch = curl_init();
 
-            // tutup curl 
-            curl_close($ch);      
+        // set url for Detik Dot Com
+        curl_setopt($ch, CURLOPT_URL, "https://www.detik.com/tag/virus-corona/?sortby=time&page=" . $page);
 
-            $html  = str_get_html($output);
+        // return the transfer as a string 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+        // $output contains the output string 
+        $output = curl_exec($ch);
+
+        // tutup curl 
+        curl_close($ch);
+
+        $html  = str_get_html($output);
+
+        if (isset($html)) {
             $bahan = $html->find('div[class=list list--feed media_rows middle mb15 pb15 an_4_3]');
 
             $output_detik = array();
 
-            foreach($bahan as $index => $value){
+            foreach ($bahan as $index => $value) {
                 $index_title = 0;
                 $index_date = 0;
                 $index_desc = 0;
@@ -39,7 +41,7 @@
                  * Get Data Title
                  */
                 $title = $value->find('h2[class=title]');
-                foreach($title as $row){
+                foreach ($title as $row) {
                     $output_detik[$index_title]['title'] = $row->innertext;
                     $index_title++;
                 }
@@ -48,7 +50,7 @@
                  * Get Data Date
                  */
                 $date = $value->find('span[class=date]');
-                foreach($date as $row){
+                foreach ($date as $row) {
                     $dates = substr($row->innertext, 0, strlen($row->innertext) - 4);
                     $dates = explode(",", $dates);
                     $dates = explode(" ", substr($dates[1], 1));
@@ -89,12 +91,12 @@
                         case 'Desember':
                             $dates[1] = 12;
                             break;
-                        
+
                         default:
                             # code...
                             break;
                     }
-                    $dates = $dates[2]."-".$dates[1]."-".$dates[0]." ".$dates[3];
+                    $dates = $dates[2] . "-" . $dates[1] . "-" . $dates[0] . " " . $dates[3];
                     $output_detik[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
                     $index_date++;
                 }
@@ -113,7 +115,7 @@
                  */
                 $image = $value->find('img');
 
-                foreach($image as $row){
+                foreach ($image as $row) {
                     $output_detik[$index_image]['image'] = $row->src;
                     $index_image++;
                 }
@@ -129,40 +131,42 @@
                     $index_link++;
                 }
             }
-
-            return $output_detik;
         }
 
-        public function read_kompas($page)
-        {
-            /**
-             * Get Data For Kompas Dot Com
-             * Source Url : https://www.kompas.com/covid-19?page=1
-             */
+        return $output_detik;
+    }
 
-            // persiapkan curl for Kompas Dot Com
-            $ch = curl_init(); 
+    public function read_kompas($page)
+    {
+        /**
+         * Get Data For Kompas Dot Com
+         * Source Url : https://www.kompas.com/covid-19?page=1
+         */
 
-            // set url for Kompas Dot Com
-            curl_setopt($ch, CURLOPT_URL, "https://www.kompas.com/covid-19?page=".$page);
+        // persiapkan curl for Kompas Dot Com
+        $ch = curl_init();
 
-            // return the transfer as a string 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        // set url for Kompas Dot Com
+        curl_setopt($ch, CURLOPT_URL, "https://www.kompas.com/covid-19?page=" . $page);
 
-            // $output contains the output string 
-            $output = curl_exec($ch); 
+        // return the transfer as a string 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            // tutup curl 
-            curl_close($ch);  
+        // $output contains the output string 
+        $output = curl_exec($ch);
 
-            $html = str_get_html($output); //Convert html to object
+        // tutup curl 
+        curl_close($ch);
 
-            /**
-             * Find Data, Find div class from Source 
-             */
+        $html = str_get_html($output); //Convert html to object
 
-            $output_kompas = array();
+        /**
+         * Find Data, Find div class from Source 
+         */
 
+        $output_kompas = array();
+
+        if (isset($html)) {
             $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
 
             foreach ($bahan as $index => $value) {
@@ -188,10 +192,10 @@
                  * Get Article Date
                  */
                 $date = $value->find('div[class=article__date]');
-                
+
                 foreach ($date as $row) {
                     $dates = explode(" ", $row->innertext);
-                    $dates = substr($dates[0], 0, strlen($dates[0]) - 1)." ".$dates[1];
+                    $dates = substr($dates[0], 0, strlen($dates[0]) - 1) . " " . $dates[1];
 
                     $output_kompas[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
                     $index_date++;
@@ -202,44 +206,46 @@
                  */
                 $image = $value->find('img');
 
-                foreach($image as $row){
+                foreach ($image as $row) {
                     $output_kompas[$index_image]['image'] = $row->src;
                     $index_image++;
                 }
             }
-
-            return $output_kompas;
         }
 
-        public function read_cnn($page)
-        {
-            /**
-             * Get Data For CNN Dot Com
-             * Source Url : https://www.cnnindonesia.com/tag/covid_19
-             */
+        return $output_kompas;
+    }
 
-            // persiapkan curl for Kompas Dot Com
-            $ch = curl_init(); 
+    public function read_cnn($page)
+    {
+        /**
+         * Get Data For CNN Dot Com
+         * Source Url : https://www.cnnindonesia.com/tag/covid_19
+         */
 
-            // set url for Kompas Dot Com
-            curl_setopt($ch, CURLOPT_URL, "https://www.cnnindonesia.com/tag/covid_19/".$page);
+        // persiapkan curl for Kompas Dot Com
+        $ch = curl_init();
 
-            // return the transfer as a string 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        // set url for Kompas Dot Com
+        curl_setopt($ch, CURLOPT_URL, "https://www.cnnindonesia.com/tag/covid_19/" . $page);
 
-            // $output contains the output string 
-            $output = curl_exec($ch); 
+        // return the transfer as a string 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            // tutup curl 
-            curl_close($ch);  
+        // $output contains the output string 
+        $output = curl_exec($ch);
 
-            $output_cnn = array();
+        // tutup curl 
+        curl_close($ch);
 
-            /**
-             * Parsing to Object
-             */
-            $html = str_get_html($output);
+        $output_cnn = array();
 
+        /**
+         * Parsing to Object
+         */
+        $html = str_get_html($output);
+
+        if (isset($html)) {
             $bahan = $html->find('div[class=list media_rows middle]');
 
             foreach ($bahan as $index => $value) {
@@ -253,7 +259,7 @@
                  */
                 $title = $value->find('h2[class=title]');
 
-                foreach ($title as $row ) {
+                foreach ($title as $row) {
                     $output_cnn[$index_title]['title'] = $row->innertext;
                     $index_title++;
                 }
@@ -262,7 +268,7 @@
                  * Get CNN Date
                  */
                 $date = $value->find('span[class=date]');
-                foreach ($date as $row ) {
+                foreach ($date as $row) {
                     $val = $row->innertext;
                     $val = explode("lalu", $val);
                     $val = str_replace("<!--", "", $val[1]);
@@ -278,7 +284,7 @@
                  */
                 $image = $value->find('img');
 
-                foreach($image as $row){
+                foreach ($image as $row) {
                     $output_cnn[$index_image]['image'] = $row->src;
                     $index_image++;
                 }
@@ -287,7 +293,7 @@
                  * Get CNN Link
                  */
                 $link = $value->find('a');
-                foreach($link as $row){
+                foreach ($link as $row) {
                     $output_cnn[$index_link]['link'] = $row->href;
                     $output_cnn[$index_link]['source'] = "CNN.com";
                     $output_cnn[$index_link]['description'] = "null";
@@ -295,11 +301,10 @@
                     $index_link++;
                 }
             }
-
-            return $output_cnn;
         }
+
+        return $output_cnn;
     }
+}
     
     /* End of file NewsModel.php */
-    
-?>
