@@ -171,52 +171,52 @@ class NewsModel extends CI_Model
         $output_kompas = array();
 
         echo $output;
-        if (isset($html)) {
-            $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
+        // if (isset($html)) {
+        //     $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
 
-            foreach ($bahan as $index => $value) {
-                $index_title = 0;
-                $index_date = 0;
-                $index_image = 0;
-                /**
-                 * Get Article Title
-                 */
+        //     foreach ($bahan as $index => $value) {
+        //         $index_title = 0;
+        //         $index_date = 0;
+        //         $index_image = 0;
+        //         /**
+        //          * Get Article Title
+        //          */
 
-                $title = $value->find('a[class=article__link]');
+        //         $title = $value->find('a[class=article__link]');
 
-                foreach ($title as $row) {
-                    $output_kompas[$index_title]['title'] = $row->innertext;
-                    $output_kompas[$index_title]['link'] = $row->href;
-                    $output_kompas[$index_title]['source'] = "Kompas.com";
-                    $output_kompas[$index_title]['description'] = "null";
+        //         foreach ($title as $row) {
+        //             $output_kompas[$index_title]['title'] = $row->innertext;
+        //             $output_kompas[$index_title]['link'] = $row->href;
+        //             $output_kompas[$index_title]['source'] = "Kompas.com";
+        //             $output_kompas[$index_title]['description'] = "null";
 
-                    $index_title++;
-                }
+        //             $index_title++;
+        //         }
 
-                /**
-                 * Get Article Date
-                 */
-                $date = $value->find('div[class=article__date]');
+        //         /**
+        //          * Get Article Date
+        //          */
+        //         $date = $value->find('div[class=article__date]');
 
-                foreach ($date as $row) {
-                    $dates = explode(" ", $row->innertext);
-                    $dates = substr($dates[0], 0, strlen($dates[0]) - 1) . " " . $dates[1];
+        //         foreach ($date as $row) {
+        //             $dates = explode(" ", $row->innertext);
+        //             $dates = substr($dates[0], 0, strlen($dates[0]) - 1) . " " . $dates[1];
 
-                    $output_kompas[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
-                    $index_date++;
-                }
+        //             $output_kompas[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
+        //             $index_date++;
+        //         }
 
-                /**
-                 * Get Article Images
-                 */
-                $image = $value->find('img');
+        //         /**
+        //          * Get Article Images
+        //          */
+        //         $image = $value->find('img');
 
-                foreach ($image as $row) {
-                    $output_kompas[$index_image]['image'] = $row->src;
-                    $index_image++;
-                }
-            }
-        }
+        //         foreach ($image as $row) {
+        //             $output_kompas[$index_image]['image'] = $row->src;
+        //             $index_image++;
+        //         }
+        //     }
+        // }
 
         return $output_kompas;
     }
