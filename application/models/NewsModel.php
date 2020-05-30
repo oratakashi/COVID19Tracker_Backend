@@ -15,6 +15,8 @@ class NewsModel extends CI_Model
         // set url for Detik Dot Com
         curl_setopt($ch, CURLOPT_URL, "https://www.detik.com/tag/virus-corona/?sortby=time&page=" . $page);
 
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+
         // return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -149,6 +151,8 @@ class NewsModel extends CI_Model
         // set url for Kompas Dot Com
         curl_setopt($ch, CURLOPT_URL, "https://www.kompas.com/covid-19?page=" . $page);
 
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+
         // return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -228,6 +232,8 @@ class NewsModel extends CI_Model
 
         // set url for Kompas Dot Com
         curl_setopt($ch, CURLOPT_URL, "https://www.cnnindonesia.com/tag/covid_19/" . $page);
+
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
 
         // return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
