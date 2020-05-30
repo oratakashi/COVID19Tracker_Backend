@@ -161,6 +161,9 @@ class NewsModel extends CI_Model
         // $output contains the output string 
         $output = curl_exec($ch);
 
+        $curl_error = curl_error($ch);
+        echo "<script>console.log($curl_error);</script>";
+
         // tutup curl 
         curl_close($ch);
 
