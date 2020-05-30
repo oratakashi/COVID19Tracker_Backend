@@ -170,6 +170,7 @@ class NewsModel extends CI_Model
 
         $output_kompas = array();
 
+        echo $output;
         if (isset($html)) {
             $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
 
