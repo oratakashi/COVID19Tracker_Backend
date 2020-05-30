@@ -23,12 +23,16 @@ class NewsModel extends CI_Model
         // $output contains the output string 
         $output = curl_exec($ch);
 
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        $curl_error = curl_error($ch);
+
         // tutup curl 
         curl_close($ch);
 
         $html  = str_get_html($output);
 
-        if (isset($html)) {
+        if (isset($html) && empty($curl_error) && $http_status == 200) {
             $bahan = $html->find('div[class=list list--feed media_rows middle mb15 pb15 an_4_3]');
 
             $output_detik = array();
@@ -133,6 +137,8 @@ class NewsModel extends CI_Model
                     $index_link++;
                 }
             }
+        } else {
+            echo "<script>console.log('Error : $curl_error');</script>";
         }
 
         return $output_detik;
@@ -149,7 +155,7 @@ class NewsModel extends CI_Model
         $ch = curl_init();
 
         // set url for Kompas Dot Com
-        curl_setopt($ch, CURLOPT_URL, "http://www.kompas.com/covid-19?page=" . $page);
+        curl_setopt($ch, CURLOPT_URL, "https://www.kompas.com/covid-19?page=" . $page);
 
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
 
@@ -161,10 +167,9 @@ class NewsModel extends CI_Model
         // $output contains the output string 
         $output = curl_exec($ch);
 
-        $curl_error = curl_error($ch);
-        echo "<script>console.log('Error : $curl_error');</script>";
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        var_dump($curl_error);
+        $curl_error = curl_error($ch);
 
         // tutup curl 
         curl_close($ch);
@@ -176,54 +181,55 @@ class NewsModel extends CI_Model
          */
 
         $output_kompas = array();
+        if (isset($html) && empty($curl_error) && $http_status == 200) {
 
-        echo $output;
-        // if (isset($html)) {
-        //     $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
+            $bahan = $html->find('div[class=latest ga--latest mt2 clearfix]');
 
-        //     foreach ($bahan as $index => $value) {
-        //         $index_title = 0;
-        //         $index_date = 0;
-        //         $index_image = 0;
-        //         /**
-        //          * Get Article Title
-        //          */
+            foreach ($bahan as $index => $value) {
+                $index_title = 0;
+                $index_date = 0;
+                $index_image = 0;
+                /**
+                 * Get Article Title
+                 */
 
-        //         $title = $value->find('a[class=article__link]');
+                $title = $value->find('a[class=article__link]');
 
-        //         foreach ($title as $row) {
-        //             $output_kompas[$index_title]['title'] = $row->innertext;
-        //             $output_kompas[$index_title]['link'] = $row->href;
-        //             $output_kompas[$index_title]['source'] = "Kompas.com";
-        //             $output_kompas[$index_title]['description'] = "null";
+                foreach ($title as $row) {
+                    $output_kompas[$index_title]['title'] = $row->innertext;
+                    $output_kompas[$index_title]['link'] = $row->href;
+                    $output_kompas[$index_title]['source'] = "Kompas.com";
+                    $output_kompas[$index_title]['description'] = "null";
 
-        //             $index_title++;
-        //         }
+                    $index_title++;
+                }
 
-        //         /**
-        //          * Get Article Date
-        //          */
-        //         $date = $value->find('div[class=article__date]');
+                /**
+                 * Get Article Date
+                 */
+                $date = $value->find('div[class=article__date]');
 
-        //         foreach ($date as $row) {
-        //             $dates = explode(" ", $row->innertext);
-        //             $dates = substr($dates[0], 0, strlen($dates[0]) - 1) . " " . $dates[1];
+                foreach ($date as $row) {
+                    $dates = explode(" ", $row->innertext);
+                    $dates = substr($dates[0], 0, strlen($dates[0]) - 1) . " " . $dates[1];
 
-        //             $output_kompas[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
-        //             $index_date++;
-        //         }
+                    $output_kompas[$index_date]['date'] = date("Y-m-d H:i:s", strtotime($dates));
+                    $index_date++;
+                }
 
-        //         /**
-        //          * Get Article Images
-        //          */
-        //         $image = $value->find('img');
+                /**
+                 * Get Article Images
+                 */
+                $image = $value->find('img');
 
-        //         foreach ($image as $row) {
-        //             $output_kompas[$index_image]['image'] = $row->src;
-        //             $index_image++;
-        //         }
-        //     }
-        // }
+                foreach ($image as $row) {
+                    $output_kompas[$index_image]['image'] = $row->src;
+                    $index_image++;
+                }
+            }
+        } else {
+            echo "<script>console.log('Error : $curl_error');</script>";
+        }
 
         return $output_kompas;
     }
@@ -248,6 +254,9 @@ class NewsModel extends CI_Model
 
         // $output contains the output string 
         $output = curl_exec($ch);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        $curl_error = curl_error($ch);
 
         // tutup curl 
         curl_close($ch);
@@ -259,7 +268,7 @@ class NewsModel extends CI_Model
          */
         $html = str_get_html($output);
 
-        if (isset($html)) {
+        if (isset($html) && empty($curl_error) && $http_status == 200) {
             $bahan = $html->find('div[class=list media_rows middle]');
 
             foreach ($bahan as $index => $value) {
@@ -315,6 +324,8 @@ class NewsModel extends CI_Model
                     $index_link++;
                 }
             }
+        } else {
+            echo "<script>console.log('Error : $curl_error');</script>";
         }
 
         return $output_cnn;
