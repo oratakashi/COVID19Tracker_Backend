@@ -156,6 +156,8 @@ class NewsModel extends CI_Model
         // return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+
         // $output contains the output string 
         $output = curl_exec($ch);
 
