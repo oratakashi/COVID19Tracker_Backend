@@ -137,8 +137,6 @@ class NewsModel extends CI_Model
                     $index_link++;
                 }
             }
-        } else {
-            echo "<script>console.log('Error : $curl_error');</script>";
         }
 
         return $output_detik;
@@ -227,8 +225,6 @@ class NewsModel extends CI_Model
                     $index_image++;
                 }
             }
-        } else {
-            echo "<script>console.log('Error : $curl_error');</script>";
         }
 
         return $output_kompas;
@@ -324,8 +320,6 @@ class NewsModel extends CI_Model
                     $index_link++;
                 }
             }
-        } else {
-            echo "<script>console.log('Error : $curl_error');</script>";
         }
 
         return $output_cnn;
